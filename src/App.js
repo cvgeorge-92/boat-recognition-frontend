@@ -7,7 +7,7 @@ function App() {
   const [message, setMessage] = useState("Loading...");
 
   useEffect(() => {
-    fetch("http://34.219.168.65:5000")
+    fetch("https://mutinybayboatwatching.xyz/")
       .then((response) => response.json())
       .then((data) => setMessage(data.message))
       .catch((error) => {
