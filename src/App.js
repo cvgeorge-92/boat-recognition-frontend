@@ -3,12 +3,25 @@ import "./App.css";
 
 function App() {
   const [selectedDate, setSelectedDate] = useState(() => {
-    const today = new Date().toISOString().split("T")[0];
-    return today;
+    const today = new Date();  
+    const localDate = today.toLocaleDateString('en-CA'); // format: YYYY-MM-DD
+    return localDate;
   });
+
   const [isLoading, setIsLoading] = useState(false);
   const [images, setImages] = useState([]);
   const [error, setError] = useState(null);
+
+  const makeHumanReadableDate = (dateString) => {
+    // Strip microseconds (JavaScript can't parse more than 3 digits of milliseconds)
+    const cleanedInput = dateString.replace(/\.\d{6}/, match => match.slice(0, 4));
+
+    // Parse the date
+    const date = new Date(cleanedInput);
+
+    // Format to local time string (HH:MM:SS AM/PM or 24h depending on user's locale settings)
+    return date.toLocaleTimeString();
+  }
 
   useEffect(() => {
     if (!selectedDate) return;
@@ -51,7 +64,7 @@ function App() {
             <a href={img.presignedUrl} target="_blank" rel="noopener noreferrer">
               <img src={img.presignedUrl} alt={img.title || "Boat"} />
             </a>
-            <p>{img.title}</p>
+            <p>{makeHumanReadableDate(img.createdAt)}</p>
           </div>
         ))}
       </div>
